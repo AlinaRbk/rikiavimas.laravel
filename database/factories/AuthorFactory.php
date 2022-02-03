@@ -17,7 +17,7 @@ class AuthorFactory extends Factory
             'name'=> $this->faker->firstname(),
             'surname'=> $this->faker->lastname(),
             'username'=> $this->faker->firstname(),
-            'descripton'=> $this->faker->sentence(5)
+            'description'=> $this->faker->sentence(5)
         ];
     }
 }
