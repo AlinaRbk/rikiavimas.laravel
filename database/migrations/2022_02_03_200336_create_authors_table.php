@@ -19,7 +19,7 @@ class CreateAuthorsTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('username');
-            $table->longTex('description');
+            $table->longText('description');
 
             $table->timestamps();
         });

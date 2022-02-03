@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use App\Model\Author;
 class AuthorSeeder extends Seeder
 {
     /**
@@ -13,6 +13,6 @@ class AuthorSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Author::factory(100)->create();
     }
 }
