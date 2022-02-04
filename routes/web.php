@@ -27,3 +27,10 @@ Route::prefix('authors')->group(function() {
     Route::get('search', 'App\Http\Controllers\AuthorController@search')->name('author.search');    
 
 });
+
+Route::prefix('books')->group(function() {
+
+    Route::get('', 'App\Http\Controllers\BookController@index')->name('book.index');    
+    //Route::get('search', 'App\Http\Controllers\AuthorController@search')->name('author.search');    
+
+});
