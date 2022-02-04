@@ -18,20 +18,33 @@ class BookController extends Controller
     {
         $sortCollumn = $request-> sortCollumn;
         $sortOrder = $request->sortOrder;
+
+        $tem_book = Book::all();
+        $books_collumns = $array_keys($books->first()->getAttributes());
       
         if(empty($sortCollumn) || empty($sortOrder)) {
            $books = Book::all();
        }else {
+           if($sortCollumn == "author_id"){
+                $sortBool =   true;
+            
+            if($sortOrder == "asc"){
+                $sortBool = falce;
+            }
+
+             $books = Book::get()->sortBy(function($query){
+                return $query->bookAuthor->name;
+            }, sort_regular,true)->all();
+           } else {
+               $books = Book::orderBy($sortCollumn, $sortOrder)->get();
+           }
 
            //$books = Book::orderBy($sortCollumn,$sortOrder)->get ();
-           $books = Book::get()->sortBy(function($query){
-               return $query->bookAuthor->name;
-           }, sort_regular,true)->all();
 
        }
 
         //$select_array = array_keys($books->first()->getAttributes());
-       $select_array = array('author');
+        $select_array = $book_collumns;
         return view('book.index', ['books' => $books, 'sortCollumn'=>$sortCollumn, 'sortOrder'=>$sortOrder, 'select_array'=>$select_array]);
     
     }
