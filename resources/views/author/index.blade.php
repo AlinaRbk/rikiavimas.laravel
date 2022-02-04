@@ -31,6 +31,14 @@
         {{$sortCollumn}}
         {{$sortOrder}}
     </div>
+    <div class="search_form">
+        <form action="{{route('author.search')}}" method="GET">
+            @csrf
+            <input type="text" name="search_key" placeholder="search..."/>
+            <button type="submit">ieskok</button>
+</form>
+
+</div>
 
     <table class="table table-striped">
     <tr>

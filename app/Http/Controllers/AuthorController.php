@@ -119,12 +119,13 @@ class AuthorController extends Controller
     public function search(Request $request) {
        // $authors = Author::all();
 
-       $search_key = 'de';
+       $search_key = $request->search_key;
+
        $authors = Author::where('description', 'like','%'.$search_key.'%') 
-       ->orWhere('name','like','%')
-       ->orWhere('surname','like','%')
-       ->orWhere('username','like','%')
-       ->orWhere('id','like','%')
+       ->orWhere('name','like','%'.$search_key.'%')
+       ->orWhere('surname','like','%'.$search_key.'%')
+       ->orWhere('username','like','%'.$search_key.'%')
+       ->orWhere('id','like','%'.$search_key.'%')
        ->get();
        
        
