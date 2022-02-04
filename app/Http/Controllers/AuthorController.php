@@ -6,7 +6,7 @@ use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use Illuminate\Http\Request;
-use \Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
 
 class AuthorController extends Controller
@@ -38,7 +38,7 @@ class AuthorController extends Controller
            $authors = Author::orderBy($sortCollumn,$sortOrder)->get ();
        }
 
-$select_array = array_keys($authors->first()->getAttributes());
+        $select_array = array_keys($authors->first()->getAttributes());
 
 
 
@@ -116,4 +116,23 @@ $select_array = array_keys($authors->first()->getAttributes());
     {
         //
     }
+    public function search(Request $request) {
+       // $authors = Author::all();
+
+       $search_key = 'de';
+       $authors = Author::where('description', 'like','%'.$search_key.'%') 
+       ->orWhere('name','like','%')
+       ->orWhere('surname','like','%')
+       ->orWhere('username','like','%')
+       ->orWhere('id','like','%')
+       ->get();
+       
+       
+       //%-iesko teksto kuris turi ta irasa
+       //where () - 3 parametrai: 1 stulpelio pavadinimas, 2 reiksme operacijos veiksmas(=,<,>,like ir t.t.), 3 reiksme. jei naudojame 2, tai 1 ir 3
+        
+       
+       return view('author.search',['authors'=>$authors]);
+    }
+
 }
