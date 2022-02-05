@@ -2,20 +2,26 @@
 
 @section('content')
 <div class="container">
-    
+    {{-- {{print_r($select_array)}} --}}
     <form method="GET" action="{{route('author.index')}}">
         @csrf
-        <!-- <input name ="sortCollumn" type ="text" /> -->
+        {{-- <input name="sortCollumn" type="text" /> --}}
        <select name ="sortCollumn">
             <!-- <option value="id">ID</option>
             <option value="name">Name</option>
             <option value="surname">Surname</option>
             <option value="username">Username</option>
             <option value="description">Description</option> -->
-            @foreach($select_array as $item)
-            <option value="{{$item}}">{{$item}}</option>
-            @endforeach
+            @foreach ($select_array as $key=>$item)
+                {{$key}}
+                @if($item == $sortCollumn || ($key == 0 && empty($sortCollumn)) )
+                    <option value="{{$item}}" selected>{{$item}}</option>
+            @else
+            <option value="{{$item}}" >{{$item}}</option>
+            @endif
+        @endforeach
         </select>
+        {{-- <input name="sortOrder" type="text" /> --}}
         <select name ="sortOrder" >
             @if ($sortOrder == 'asc' || empty ($sortOrder))
                 <option value="asc" selected>Ascenting</option>
@@ -32,13 +38,13 @@
         {{$sortOrder}}
     </div>
     <div class="search_form">
-        <form action="{{route('author.search')}}" method="GET">
+        <form action="{{route('author.search')}}" method="GET"> 
             @csrf
             <input type="text" name="search_key" placeholder="search..."/>
             <button type="submit">ieskok</button>
-</form>
+        </form>
 
-</div>
+    </div>
 
     <table class="table table-striped">
     <tr>

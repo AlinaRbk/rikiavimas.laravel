@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+
 use Illuminate\Http\Request;
+
 
 class BookController extends Controller
 {
@@ -16,37 +19,38 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $sortCollumn = $request-> sortCollumn;
-        $sortOrder = $request->sortOrder;
+        $authors = Author::orderBy('name', 'asc' )->get();
+        // ar cia knyga kazkuo susijusi su autoriumi?
+        $sortCollumn = $request->sortCollumn; //name
+        $sortOrder = $request->sortOrder; // ASC/DESC
 
         $tem_book = Book::all();
-        $books_collumns = $array_keys($books->first()->getAttributes());
-      
+        $book_collumns = array_keys($tem_book->first()->getAttributes());
+
         if(empty($sortCollumn) || empty($sortOrder)) {
-           $books = Book::all();
-       }else {
-           if($sortCollumn == "author_id"){
-                $sortBool =   true;
+            $books = Book::all();
+        } else {
+
+            if($sortCollumn == "author_id") {
+                $sortBool = true;
+                
+                if($sortOrder == "asc"){
+                    $sortBool = false;
+                }
+
+                $books = Book::get()->sortBy(function($query){
+                    return $query->bookAuthor->name;
+                }, SORT_REGULAR, $sortBool )->all();
             
-            if($sortOrder == "asc"){
-                $sortBool = falce;
+            } else {
+                $books = Book::orderBy($sortCollumn, $sortOrder )->get();
             }
+        }   
 
-             $books = Book::get()->sortBy(function($query){
-                return $query->bookAuthor->name;
-            }, sort_regular,true)->all();
-           } else {
-               $books = Book::orderBy($sortCollumn, $sortOrder)->get();
-           }
+         $select_array =  $book_collumns;
+        // $select_array = array('author');
 
-           //$books = Book::orderBy($sortCollumn,$sortOrder)->get ();
-
-       }
-
-        //$select_array = array_keys($books->first()->getAttributes());
-        $select_array = $book_collumns;
-        return view('book.index', ['books' => $books, 'sortCollumn'=>$sortCollumn, 'sortOrder'=>$sortOrder, 'select_array'=>$select_array]);
-    
+        return view('book.index', ['books' => $books, 'authors'=>$authors, 'sortCollumn' =>$sortCollumn, 'sortOrder'=> $sortOrder, 'select_array' => $select_array,  ]);
     }
 
     /**
@@ -113,5 +117,18 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         //
+    }
+
+    public function bookfilter(Request $request) {
+        //1. filtras turi viena inputa kuriame yra select
+        //2. tame select yra atvaizduojami visi autoriai
+        //3. pasirinktas autorius yra perduodamas per forma i bookfilter funkcija
+        //4. ir pagal autoriaus kintamaji mes vykdome filtravima
+
+        // $books = Book::all();
+
+        $author_id = $request->author_id;
+        $books = Book::where('author_id', '=' , $author_id)->get();
+        return view('book.bookfilter', ['books' =>$books]);
     }
 }

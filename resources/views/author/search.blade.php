@@ -10,14 +10,14 @@
             <th>Username</th>
             <th>Description</th>
         </tr>
-        @foreach ($searchs as $search)
-        <tr>
-            <td>{{$search->id}}</td>
-            <td>{{$search->name}}</td>
-            <td>{{$search->surname}}</td>
-            <td>{{$search->username}}</td>
-            <td>{{$search->description}}</td>
-         </tr>
+        @foreach ($authors as $author)
+                <tr>
+                    <td>{{$author->id}}</td>
+                    <td>{{$author->name}}</td>
+                    <td>{{$author->surname}}</td>
+                    <td>{{$author->username}}</td>
+                    <td>{{$author->description}}</td>
+                </tr>
 
         @endforeach
         </table>
